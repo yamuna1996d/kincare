@@ -106,6 +106,8 @@ abstract final class AppStrings {
   static const String childProfile = 'Child Profile';
   static const String childName = 'Child Name';
   static const String childAge = 'Age';
+  static const String riya = 'Riya Menon';
+  static const String aarav = 'Aarav Menon';
   static const String noChildren = 'No children added yet';
   static const String searchChildren = 'Search children...';
   static const String viewHistory = 'View History';

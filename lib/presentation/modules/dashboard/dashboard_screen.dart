@@ -157,14 +157,14 @@ class _DashboardBody extends StatelessWidget {
           // this section would come from the dashboard API response and
           // iterate over the guardian's actual children.
           _ChildPreviewCard(
-            name: 'Riya Menon',
+            name: AppStrings.riya,
             age: '6 ${AppStrings.yrs}',
             status: AppStrings.allClearToday,
             onTap: () => Get.toNamed(AppRoutes.childDetails, arguments: '1'),
           ),
           const SizedBox(height: AppDimensions.spacingSm),
           _ChildPreviewCard(
-            name: 'Aarav Menon',
+            name: AppStrings.aarav,
             age: '3 ${AppStrings.yrs}',
             status: AppStrings.doseRemaining,
             onTap: () => Get.toNamed(AppRoutes.childDetails, arguments: '2'),
