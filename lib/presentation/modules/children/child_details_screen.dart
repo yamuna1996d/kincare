@@ -119,107 +119,107 @@ class _ChildProfileBody extends StatelessWidget {
     final padding = ResponsiveHelper.horizontalPadding(context);
 
     return SingleChildScrollView(
-      // Use EdgeInsetsDirectional so start/end map correctly in both
-      // LTR and RTL layouts.
+      // EdgeInsetsDirectional for correct start/end in LTR and RTL.
       padding: EdgeInsetsDirectional.fromSTEB(
         padding,
         AppDimensions.paddingLg,
         padding,
         AppDimensions.paddingLg,
       ),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: AppDimensions.maxContentWidth,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _ProfileHeader(child: child),
-              const SizedBox(height: AppDimensions.spacingLg),
-              if (child.bloodGroup != null || child.weightKg != null) ...[
-                SectionLabel(AppStrings.healthMetrics),
-                const SizedBox(height: AppDimensions.spacingSm),
-                _HealthMetricsRow(child: child),
-                const SizedBox(height: AppDimensions.spacingLg),
-              ],
-              if (child.allergyName != null) ...[
-                _AllergyBanner(child: child),
-                const SizedBox(height: AppDimensions.spacingLg),
-              ],
-              SectionLabel(
-                AppStrings.activeMedications,
-                trailing: Semantics(
-                  button: true,
-                  label: AppStrings.viewHistory,
-                  excludeSemantics: true,
-                  onTap: () => Get.toNamed(
-                    AppRoutes.medications,
-                    arguments: {'childId': child.id, 'childName': child.name},
-                  ),
-                  child: TextButton.icon(
-                    onPressed: () => Get.toNamed(
-                      AppRoutes.medications,
-                      arguments: {'childId': child.id, 'childName': child.name},
-                    ),
-                    label: Text(
-                      AppStrings.viewHistory,
-                      style: TextStyle(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    icon: Icon(Icons.arrow_forward_ios, size: 16, color: theme.colorScheme.primary),
-                    iconAlignment: IconAlignment.end,
+      // Removed Center → ConstrainedBox wrapper. On mobile the screen is
+      // always narrower than maxContentWidth, so Center did nothing while
+      // ConstrainedBox could fight with CrossAxisAlignment.stretch. If a
+      // max-width cap is needed for tablets, apply it inside the Scaffold
+      // body (e.g. via LayoutBuilder) instead of inside the scroll view.
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _ProfileHeader(child: child),
+          const SizedBox(height: AppDimensions.spacingLg),
+          if (child.bloodGroup != null || child.weightKg != null) ...[
+            const SectionLabel(AppStrings.healthMetrics),
+            const SizedBox(height: AppDimensions.spacingSm),
+            _HealthMetricsRow(child: child),
+            const SizedBox(height: AppDimensions.spacingLg),
+          ],
+          if (child.allergyName != null) ...[
+            _AllergyBanner(child: child),
+            const SizedBox(height: AppDimensions.spacingLg),
+          ],
+          SectionLabel(
+            AppStrings.activeMedications,
+            trailing: Semantics(
+              button: true,
+              label: AppStrings.viewHistory,
+              excludeSemantics: true,
+              onTap: () => Get.toNamed(
+                AppRoutes.medications,
+                arguments: {'childId': child.id, 'childName': child.name},
+              ),
+              child: TextButton.icon(
+                onPressed: () => Get.toNamed(
+                  AppRoutes.medications,
+                  arguments: {'childId': child.id, 'childName': child.name},
+                ),
+                style: TextButton.styleFrom(
+                  // Remove the default horizontal padding so the button
+                  // text sits flush with the content edge.
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                label: Text(
+                  AppStrings.viewHistory,
+                  style: TextStyle(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
+                icon: Icon(Icons.arrow_forward_ios, size: 14, color: theme.colorScheme.primary),
+                iconAlignment: IconAlignment.end,
               ),
-              const SizedBox(height: AppDimensions.spacingSm),
-              Obx(() {
-                if (medicationController.isLoading.value) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: AppDimensions.paddingLg,
-                    ),
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
-                // Filter the full medications list in-memory for this child's
-                // active entries. MedicationController.medications holds all
-                // records already fetched for the medication list screen, so
-                // no extra network call is needed here.
-                final activeMedications = medicationController.medications
-                    .where((m) => m.childId == child.id && m.isActive)
-                    .toList();
-                if (activeMedications.isEmpty) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: AppDimensions.paddingMd,
-                    ),
-                    child: Text(
-                      AppStrings.noActiveMedications,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  );
-                }
-                return Column(
-                  children: activeMedications
-                      .map((m) => _MedicationCard(medication: m))
-                      .toList(),
-                );
-              }),
-              const SizedBox(height: AppDimensions.spacingLg),
-              if (child.nextAppointmentTitle != null) ...[
-                SectionLabel(AppStrings.upcomingAppointment),
-                const SizedBox(height: AppDimensions.spacingSm),
-                _AppointmentCard(child: child),
-                const SizedBox(height: AppDimensions.spacingLg),
-              ],
-            ],
+            ),
           ),
-        ),
+          const SizedBox(height: AppDimensions.spacingSm),
+          Obx(() {
+            if (medicationController.isLoading.value) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: AppDimensions.paddingLg,
+                ),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+            final activeMedications = medicationController.medications
+                .where((m) => m.childId == child.id && m.isActive)
+                .toList();
+            if (activeMedications.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: AppDimensions.paddingMd,
+                ),
+                child: Text(
+                  AppStrings.noActiveMedications,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              );
+            }
+            return Column(
+              children: activeMedications
+                  .map((m) => _MedicationCard(medication: m))
+                  .toList(),
+            );
+          }),
+          const SizedBox(height: AppDimensions.spacingLg),
+          if (child.nextAppointmentTitle != null) ...[
+            const SectionLabel(AppStrings.upcomingAppointment),
+            const SizedBox(height: AppDimensions.spacingSm),
+            _AppointmentCard(child: child),
+            const SizedBox(height: AppDimensions.spacingLg),
+          ],
+        ],
       ),
     );
   }
@@ -248,9 +248,10 @@ class _ProfileHeader extends StatelessWidget {
                   foregroundColor: theme.colorScheme.onPrimary,
                   fontSize: theme.textTheme.headlineLarge?.fontSize,
                 ),
-                Positioned(
+                // PositionedDirectional so the badge mirrors in RTL.
+                PositionedDirectional(
                   bottom: 0,
-                  right: 0,
+                  end: 0,
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
@@ -471,6 +472,9 @@ class _MedicationCard extends StatelessWidget {
       ),
       excludeSemantics: true,
       child: Card(
+        // Explicit margin so card edges align with section labels,
+        // Health Metrics cards, and the Appointment card.
+        margin: const EdgeInsets.only(bottom: AppDimensions.spacingXs),
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.paddingMd),
           child: Row(
@@ -554,6 +558,8 @@ class _AppointmentCard extends StatelessWidget {
     }
 
     return Card(
+      // Zero margin — aligns with section labels and other cards.
+      margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(AppDimensions.paddingMd),
         child: Column(
