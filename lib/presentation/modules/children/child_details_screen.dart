@@ -119,9 +119,13 @@ class _ChildProfileBody extends StatelessWidget {
     final padding = ResponsiveHelper.horizontalPadding(context);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(
-        horizontal: padding,
-        vertical: AppDimensions.paddingLg,
+      // Use EdgeInsetsDirectional so start/end map correctly in both
+      // LTR and RTL layouts.
+      padding: EdgeInsetsDirectional.fromSTEB(
+        padding,
+        AppDimensions.paddingLg,
+        padding,
+        AppDimensions.paddingLg,
       ),
       child: Center(
         child: ConstrainedBox(

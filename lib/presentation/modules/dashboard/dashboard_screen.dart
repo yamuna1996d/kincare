@@ -66,7 +66,9 @@ class _DashboardBody extends StatelessWidget {
       onRefresh: controller.refresh,
       color: theme.colorScheme.primary,
       child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: padding),
+        // Use EdgeInsetsDirectional so start/end map correctly in both
+        // LTR and RTL layouts.
+        padding: EdgeInsetsDirectional.fromSTEB(padding, 0, padding, 0),
         children: [
           const SizedBox(height: AppDimensions.spacingMd),
           Semantics(
@@ -114,6 +116,7 @@ class _DashboardBody extends StatelessWidget {
                       childCount: childCount,
                       medCount: medCount,
                       visitCount: visitCount,
+                      horizontalPadding: padding,
                     ),
                   ],
                 ),
@@ -184,14 +187,22 @@ class _GlanceCards extends StatelessWidget {
     required this.childCount,
     required this.medCount,
     required this.visitCount,
+    required this.horizontalPadding,
   });
 
   final String childCount;
   final String medCount;
   final String visitCount;
+  final double horizontalPadding;
 
   @override
   Widget build(BuildContext context) {
+    // Derive the half-width from the actual ListView padding so the
+    // bottom-left card stays aligned when the padding value changes.
+    final availableWidth =
+        MediaQuery.sizeOf(context).width - (horizontalPadding * 2);
+    final halfWidth = (availableWidth - AppDimensions.spacingSm) / 2;
+
     return Column(
       children: [
         Row(
@@ -221,9 +232,9 @@ class _GlanceCards extends StatelessWidget {
         ),
         const SizedBox(height: AppDimensions.spacingSm),
         Align(
-          alignment: Alignment.centerLeft,
+          alignment: AlignmentDirectional.centerStart,
           child: SizedBox(
-            width: (MediaQuery.sizeOf(context).width - 48) / 2,
+            width: halfWidth,
             child: _GlanceCard(
               icon: Icons.calendar_today_outlined,
               value: visitCount,
@@ -328,9 +339,11 @@ class _ChildPreviewCard extends StatelessWidget {
           onTap: onTap,
           behavior: HitTestBehavior.opaque,
           child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: AppDimensions.paddingMd,
-              vertical: AppDimensions.paddingXs,
+            contentPadding: const EdgeInsetsDirectional.only(
+              start: AppDimensions.paddingMd,
+              end: AppDimensions.paddingMd,
+              top: AppDimensions.paddingXs,
+              bottom: AppDimensions.paddingXs,
             ),
             leading: InitialsAvatar(name: name, radius: 22, fontSize: 16),
             title: Text(

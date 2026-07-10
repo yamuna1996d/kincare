@@ -123,7 +123,7 @@ abstract final class AppStrings {
   static const String childAddedSuccess = 'Child added successfully';
 
   // Children list
-  static const String yourChildren = 'Your children';
+  static const String yourChildren = 'Your Children';
   static const String bloodType = 'Blood Type';
   static const String vaccines = 'VACCINES';
   static const String medication = 'MEDICATION';
@@ -265,7 +265,7 @@ abstract final class AppStrings {
   static const String child = 'Child';
   static const String selectChild = 'Select a child';
   static const String dosageHint = 'e.g. 5 ml';
-  static const String dosageHelper = 'Amount given each time.';
+  static const String dosageHelper = 'Amount Given Each Time.';
   static const String dosageSemanticLabel = 'Dosage amount';
   static const String selectFrequency = 'Select frequency';
   static const String notesOptional = 'Notes (optional)';
@@ -274,9 +274,9 @@ abstract final class AppStrings {
 
   // Medication list screen
   static const String medicationHistory = 'Medication history';
-  static const String allMedications = 'All medications';
+  static const String allMedications = 'All Medications';
   static const String medicationListSubtitle =
-      'Manage daily dosage and records';
+      'Manage Daily Dosage And Records';
   static const String unassigned = 'Unassigned';
   static const String active = 'Active';
   static const String inactive = 'Inactive';
