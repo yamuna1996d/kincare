@@ -28,9 +28,9 @@ class KinCareAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: Builder(
         builder: (context) => Semantics(
           button: true,
-          label: 'Open navigation menu',
+          label: AppStrings.openNavigationMenuHint,
           child: IconButton(
-            tooltip: 'Menu',
+            tooltip: AppStrings.menuTooltip,
             icon: Icon(Icons.menu, color: theme.colorScheme.primary),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
@@ -47,10 +47,10 @@ class KinCareAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         Semantics(
           button: true,
-          label: 'For help using app double tap this button',
+          label: AppStrings.helpButtonHint,
           child: IconButton(
             icon: Icon(Icons.help_outline, color: theme.colorScheme.primary),
-            tooltip: 'Help',
+            tooltip: AppStrings.helpTooltip,
             onPressed: () => _openHelp(context),
           ),
         ),
@@ -58,7 +58,7 @@ class KinCareAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: AppDimensions.paddingSm),
           child: Semantics(
             image: true,
-            label: 'User avatar',
+            label: AppStrings.userAvatarLabel,
             child: CircleAvatar(
               radius: 16,
               backgroundColor: theme.colorScheme.primary,

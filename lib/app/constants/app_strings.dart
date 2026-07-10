@@ -192,7 +192,7 @@ abstract final class AppStrings {
       String allergyName,
       String? allergyNote,
       ) =>
-      "${name}'s Allergy: $allergyName${allergyNote != null ? ", $allergyNote" : ""}";
+      "$name's Allergy: $allergyName${allergyNote != null ? ", $allergyNote" : ""}";
 
   static String activeMedicationLabel(
       String name,
@@ -360,9 +360,26 @@ abstract final class AppStrings {
   static const String about = 'About';
   static const String version = 'Version';
   static const String flutterVersion = 'Flutter Version';
+  static const String flutterVersionValue = '3.41.7';
   static const String developer = 'Developer';
   static const String license = 'License';
   static const String openSourceLicenses = 'Open Source Licenses';
+
+  static String get appIconLabel => '$appName application icon';
+
+  static String copyrightNotice(String developer) =>
+      '© 2026 $developer. All rights reserved.';
+
+  // Kincare app bar
+  static const String openNavigationMenuHint = 'Open navigation menu';
+  static const String menuTooltip = 'Menu';
+  static const String helpButtonHint =
+      'For help using app double tap this button';
+  static const String helpTooltip = 'Help';
+  static const String userAvatarLabel = 'User avatar';
+
+  // Dashboard summary card
+  static const String opensMoreDetailsHint = 'Opens more details';
 
   // Common
   static const String cancel = 'Cancel';
