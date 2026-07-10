@@ -141,6 +141,11 @@ class _DashboardBody extends StatelessWidget {
                       onTap: () => Get.toNamed(AppRoutes.children),
                       child: TextButton.icon(
                         onPressed: () => Get.toNamed(AppRoutes.children),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
                         label: const Text(AppStrings.viewAll),
                         icon: const Icon(Icons.arrow_forward_ios, size: 14),
                         iconAlignment: IconAlignment.end,
@@ -157,14 +162,14 @@ class _DashboardBody extends StatelessWidget {
           // this section would come from the dashboard API response and
           // iterate over the guardian's actual children.
           _ChildPreviewCard(
-            name: AppStrings.riya,
+            name: 'Riya Menon',
             age: '6 ${AppStrings.yrs}',
             status: AppStrings.allClearToday,
             onTap: () => Get.toNamed(AppRoutes.childDetails, arguments: '1'),
           ),
           const SizedBox(height: AppDimensions.spacingSm),
           _ChildPreviewCard(
-            name: AppStrings.aarav,
+            name: 'Aarav Menon',
             age: '3 ${AppStrings.yrs}',
             status: AppStrings.doseRemaining,
             onTap: () => Get.toNamed(AppRoutes.childDetails, arguments: '2'),
@@ -334,6 +339,7 @@ class _ChildPreviewCard extends StatelessWidget {
       excludeSemantics: true,
       onTap: onTap,
       child: Card(
+        margin: EdgeInsets.zero,
         clipBehavior: Clip.antiAlias,
         child: GestureDetector(
           onTap: onTap,
@@ -389,6 +395,7 @@ class _UpcomingVisitCard extends StatelessWidget {
     // these fields are null and we show a "No upcoming visits" placeholder.
     if (title == null || childName == null) {
       return Card(
+        margin: EdgeInsets.zero,
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.paddingMd),
           child: Semantics(
@@ -406,6 +413,7 @@ class _UpcomingVisitCard extends StatelessWidget {
     ].join(' at ');
 
     return Card(
+      margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(AppDimensions.paddingMd),
         child: Column(
